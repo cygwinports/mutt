@@ -1,11 +1,15 @@
 NAME="mutt"
 VERSION=1.5.23
-RELEASE=1
+RELEASE=2
 CATEGORY="Mail"
 SUMMARY="A text mode mail user agent (MUA)."
 DESCRIPTION="A text mode mail user agent (MUA)."
 HOMEPAGE="http://www.mutt.org"
 SRC_URI="mirror://sourceforge/mutt/mutt-${VERSION}.tar.gz"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/mutt.git/plain/mutt-1.5.21-cabundle.patch
+	http://pkgs.fedoraproject.org/cgit/mutt.git/plain/mutt-1.5.23-sendlib.patch
+"
 
 DIFF_EXCLUDES="Makefile"
 KEEP_LA_FILES="none"
@@ -19,11 +23,15 @@ src_compile() {
 	        --disable-dependency-tracking \
 	        --docdir=/usr/share/doc/mutt \
 	        --enable-fcntl \
+		--enable-gpgme \
 	        --enable-hcache \
 	        --enable-iconv \
 	        --enable-imap \
 	        --enable-locales-fix \
 	        --enable-pop \
+	        --enable-smtp \
+		--with-gss \
+		--with-sasl \
 	        --with-ssl
 
 	cygmake
