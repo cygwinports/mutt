@@ -1,0 +1,41 @@
+NAME="mutt"
+VERSION=1.5.23
+RELEASE=1
+CATEGORY="Mail"
+SUMMARY="A text mode mail user agent (MUA)."
+DESCRIPTION="A text mode mail user agent (MUA)."
+HOMEPAGE="http://www.mutt.org"
+SRC_URI="mirror://sourceforge/mutt/mutt-${VERSION}.tar.gz"
+
+DIFF_EXCLUDES="Makefile"
+KEEP_LA_FILES="none"
+
+src_compile() {
+	cd ${S}
+	cygautoreconf
+	cd ${B}
+	cygconf \
+	        --with-mailpath=/var/spool/mail \
+	        --disable-dependency-tracking \
+	        --docdir=/usr/share/doc/mutt \
+	        --enable-fcntl \
+	        --enable-hcache \
+	        --enable-iconv \
+	        --enable-imap \
+	        --enable-locales-fix \
+	        --enable-pop \
+	        --with-ssl
+
+	cygmake
+}
+
+src_test() {
+	cd ${B}
+	cygmake -i check
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+	make_etc_defaults /etc/Muttrc /etc/mime.types
+}
